@@ -37,7 +37,9 @@ Datasets are included in both `.csv` and `.fst` (for large files) formats.
     a. Coal facility data (`data/inputs/coal_facility_data`)
         - `unit_fac_crosswalk.csv` provides a crosswalk between electricity generating unit IDs and facility IDs 
         - `facilities_by_year.csv` provides facility-specific information such as latitude/longitude, names, state, and SOx emissions (tons)
-    b. `data/outputs/population_county.fst` County populations from census data summarized using `census_data_wrangle.R` 
+        - `units_coal_1999_2020.fst` Annual SOx emissions (tons) and Heat input (MMBTU) for each unit
+        - `facility_operating_scrubbers_startyear.fst` years that each unit installed a scrubber or retired
+    b. `data/inputs/census_data/population_county.fst` County populations from census data summarized using `census_data_wrangle.R` 
 2. Output datasets (`data/outputs/`)
     a. `data/outputs/popwgt_hyads_race.fst` includes population-weighted coal PM<sub>2.5</sub> from all coal generating units. Created using `coal_pm25_to_county.R`.
     b. `data/outputs/popwgt_hyads_units_race.fst` includes population-weighted coal PM<sub>2.5</sub> from each coal generating unit. Created using `coal_pm25_to_county.R`.
@@ -47,16 +49,16 @@ Datasets are included in both `.csv` and `.fst` (for large files) formats.
 
 ## R scripts in this repository
 
-#### utility functions for data wrangling
-All code is stored in the `code/` directory.
+#### Utility functions for data wrangling
+All code is stored in the `code/` directory. There are four R scripts.
 
 1) `census_data_wrangle.R` documents the source and manipulation of the census population data
 2) `coal_pm25_to_county.R` documents the spatial aggregation of annual gridded coal PM<sub>2.5</sub> to counties. In addition, this file includes code to calculate inverse-distance population-weighted exposure from each grid location, which lays the foundation for calculating region-specific relative expected population-weighted exposure.
 
-#### scripts that reproduce results in the manuscript
+#### Scripts that reproduce results in the manuscript
 
-1) `exposure_disparities.R` Population-weighted exposure disparity calculations, including absolute and relative differences. This script reproduces many of the figures in the manuscript and supplement
-2) `exposure_contributed_avoided.R` population-weighted exposure contributed and avoided by individual facilities
+3) `exposure_disparities.R` Population-weighted exposure disparity calculations, including absolute and relative differences. This script reproduces many of the figures in the manuscript and supplement
+4) `exposure_contributed_avoided.R` population-weighted exposure contributed and avoided by individual facilities
 
 
 

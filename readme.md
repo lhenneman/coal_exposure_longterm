@@ -58,8 +58,13 @@ formats.
         -   `facilities_by_year.csv` provides facility-specific
             information such as latitude/longitude, names, state, and
             SOx emissions (tons)
-    2.  `data/outputs/population_county.fst` County populations from
-        census data summarized using `census_data_wrangle.R`
+        -   `units_coal_1999_2020.fst` Annual SOx emissions (tons) and
+            Heat input (MMBTU) for each unit
+        -   `facility_operating_scrubbers_startyear.fst` years that each
+            unit installed a scrubber or retired
+    2.  `data/inputs/census_data/population_county.fst` County
+        populations from census data summarized using
+        `census_data_wrangle.R`
 2.  Output datasets (`data/outputs/`)
     1.  `data/outputs/popwgt_hyads_race.fst` includes
         population-weighted coal PM<sub>2.5</sub> from all coal
@@ -75,9 +80,9 @@ formats.
 
 ## R scripts in this repository
 
-#### utility functions for data wrangling
+#### Utility functions for data wrangling
 
-All code is stored in the `code/` directory.
+All code is stored in the `code/` directory. There are four R scripts.
 
 1.  `census_data_wrangle.R` documents the source and manipulation of the
     census population data
@@ -88,11 +93,11 @@ All code is stored in the `code/` directory.
     calculating region-specific relative expected population-weighted
     exposure.
 
-#### scripts that reproduce results in the manuscript
+#### Scripts that reproduce results in the manuscript
 
-1.  `exposure_disparities.R` Population-weighted exposure disparity
+3.  `exposure_disparities.R` Population-weighted exposure disparity
     calculations, including absolute and relative differences. This
     script reproduces many of the figures in the manuscript and
     supplement
-2.  `exposure_contributed_avoided.R` population-weighted exposure
+4.  `exposure_contributed_avoided.R` population-weighted exposure
     contributed and avoided by individual facilities
