@@ -1,4 +1,5 @@
-Code and data for ‘22 years of coal exposure’
+Code and data for ‘22 years of coal-related PM2.5 exposure and
+inequities in the US’
 ================
 Lucas Henneman
 4/20/2022
