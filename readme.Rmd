@@ -2,7 +2,7 @@
 title: "Code and data for '22 years of coal exposure'"
 author: "Lucas Henneman"
 date: "4/20/2022"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
