@@ -310,7 +310,7 @@ gg_expected_disparities <-
          plot.margin = unit( c( .1, .2, .1, .1) , 'in'),
          strip.background = element_blank(),
          strip.text = element_text( size = 20))
-ggsave( './figures/pwe_expected_disparities20211227.png',
+ggsave( './figures/pwe_expected_disparities.png',
         gg_expected_disparities,
         width = 8, height = 5, units = 'in', scale = 1)
 
