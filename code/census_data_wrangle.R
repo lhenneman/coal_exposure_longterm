@@ -24,9 +24,20 @@ lapply( file.list, function( f) {
                     f)
   file.l <- paste0( './data/inputs/census_data/cc-est_2000-2009/',
                     f)
+  # uncomment to download
   # download.file( file.d, file.l)
 })
 
+# the following code will download the correct state-level files for 2010-2020
+file.list <- paste0( 'CC-EST2020-ALLDATA6', '.csv')
+lapply( file.list, function( f) {
+  file.d <- paste0( 'https://www2.census.gov/programs-surveys/popest/datasets/2010-2020/counties/asrh/',
+                    f)
+  file.l <- paste0( './data/inputs/census_data/',
+                    f)
+  # uncomment to download
+  # download.file( file.d, file.l) 
+})
 
 ## ============================================================
 ## read in the data

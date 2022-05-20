@@ -43,6 +43,8 @@ grid.tot.dat <- lapply( grid.files.tot.yr,
                             as( 'integer')
                           
                           in.f <- read.fst( f, as.data.table = T)
+                          setnames( in.f, c( 'x', 'y', 'vals.out'))
+                          
                           in.f[, year := year.f]
                         }) %>% rbindlist( fill = T)
 

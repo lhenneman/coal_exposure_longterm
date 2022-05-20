@@ -5,6 +5,7 @@ library( scales)
 library( raster)
 library( sf)
 library( fasterize)
+library( data.table)
 
 # define the coordinate reference system for this work
 p4s <- "+proj=lcc +lat_1=33 +lat_2=45 +lat_0=40 +lon_0=-97 +a=6370000 +b=6370000"

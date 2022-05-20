@@ -274,8 +274,3 @@ ggsave( 'figures/popwgt_evolution.png',
 
 
 
-
-
-
-
-
