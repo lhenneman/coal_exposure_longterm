@@ -9,16 +9,9 @@ library( tidyr)
 ## =================================================================
 # read in unit pw exposure (created with )
 popwgt_hyads_unit_in <- 
-  read.fst( './data/outputs/popwgt_hyads_units_race.fst',
+  read.fst( './data/outputs/popwgt_hyads_units_race2_uncertainty.fst',
             as.data.table = TRUE)[pop_name == 'TOT_POP']
 popwgt_hyads_unit_in[, uID := gsub( '^X', '', uID)]
-
-# read in the race by unit dataset
-# try just the southeastern units?
-popwgt_hy_race_unit <- 
-  read.fst( './data/outputs/popwgt_hyads_units_race.fst',
-            as.data.table = TRUE)
-popwgt_hy_race_unit[, uID := gsub( '^X', '', uID)]
 
 # read in facility emissions
 units_all_emiss <- 
@@ -30,7 +23,8 @@ year_scrub_shut_info <-
   read.fst( 'data/inputs/coal_facility_data/facility_operating_scrubbers_startyear.fst',
             as.data.table = TRUE)
 
-
+fwrite( year_scrub_shut_info,
+        'data/inputs/coal_facility_data/facility_operating_scrubbers_startyear.csv')
 
 ## ===================================================================
 # check 75%ile for heat input to differentiate high operation times
@@ -235,6 +229,9 @@ colors <-
      'Contributed: scrubber' = 'grey65',
      'Contributed: uncontrolled' = 'grey50'
   )
+
+# replace any negatives with 0 - nothing to report
+popwt_plot[ val < 0, val := 0]
 
 # make the plot
 gg_pw <- 

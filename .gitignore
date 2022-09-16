@@ -5,3 +5,4 @@
 .Rprofile
 data/inputs/coal_pm25/*
 data/inputs/census_data/*
+data/inputs/coal_facility_data/facility_operating_scrubbers_startyear.csv

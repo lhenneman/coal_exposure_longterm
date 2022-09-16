@@ -16,8 +16,7 @@ p4s <- "+proj=lcc +lat_1=33 +lat_2=45 +lat_0=40 +lon_0=-97 +a=6370000 +b=6370000
 ## data from coal_pm25_to_county.R
 # read in the race exposure for all facilities
 popwgt_hy_race <- 
-  read.fst( './data/outputs/popwgt_hyads_race.fst',
-            as.data.table = TRUE)
+  fread( './data/outputs/popwgt_hyads_race.csv')
 
 # read in the race exposure by unit dataset
 popwgt_hy_race_unit <- 
@@ -331,12 +330,13 @@ gg_norm_region <-
   scale_y_continuous( name = "Relative PWE enhancement") +
   scale_color_brewer( palette = 'Dark2') +
   facet_grid( . ~ reg) +
+  guides( color = guide_legend( ncol = 2)) +
   theme_bw() + 
   theme( axis.text = element_text( size = 14),
          axis.text.x = element_text( ),
          axis.title = element_text( size = 18),
          axis.title.x = element_blank(),
-         legend.position = c( .08, .8),
+         legend.position = c( .12, .11),
          legend.title = element_blank(),
          legend.text = element_text( size = 14),
          strip.background = element_blank(),
@@ -386,7 +386,7 @@ ggsave( './figures/pwe_norm_timeseries_maps.png',
 ## Create a plot of regions (figure si-9)
 ## ================================================== 
 # collect spatial state info and merge with region definitions
-states <- us_states()
+states <- us_states() %>% st_transform( p4s)
 states_use <- states[ !(states$state_abbr %in% c( 'AK','HI')),]
 states_area <- merge( states_use,
                       state.desig,
