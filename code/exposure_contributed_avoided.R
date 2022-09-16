@@ -20,11 +20,7 @@ units_all_emiss <-
 
 # read in unit control installations
 year_scrub_shut_info <- 
-  read.fst( 'data/inputs/coal_facility_data/facility_operating_scrubbers_startyear.fst',
-            as.data.table = TRUE)
-
-fwrite( year_scrub_shut_info,
-        'data/inputs/coal_facility_data/facility_operating_scrubbers_startyear.csv')
+  fread( 'data/inputs/coal_facility_data/facility_operating_scrubbers_startyear.csv')
 
 ## ===================================================================
 # check 75%ile for heat input to differentiate high operation times
@@ -229,9 +225,6 @@ colors <-
      'Contributed: scrubber' = 'grey65',
      'Contributed: uncontrolled' = 'grey50'
   )
-
-# replace any negatives with 0 - nothing to report
-popwt_plot[ val < 0, val := 0]
 
 # make the plot
 gg_pw <- 
