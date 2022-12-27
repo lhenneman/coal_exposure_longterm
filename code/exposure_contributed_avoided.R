@@ -2,7 +2,7 @@ library( fst)
 library( data.table)
 library( ggplot2)
 library( tidyr)
-
+library( ggpattern)
 
 ## =================================================================
 # read in data
@@ -231,8 +231,14 @@ gg_pw <-
   ggplot( popwt_plot,
           aes( y = val,
                x = year,
-               fill = classnames)) + 
-  geom_area( position = "fill") + 
+               fill = classnames,
+               pattern = classnames,
+               pattern_angle = classnames)) + 
+  geom_area_pattern( position = "fill",
+                     pattern_spacing = .03,
+                     pattern_color = NA,
+                     pattern_fill = 'white', #'grey80',
+                      ) + 
   scale_y_continuous( labels = scales::percent,
                       name = '% basline PWE contributed or avoided',
                       expand = c( 0, 0)) +
@@ -251,13 +257,17 @@ gg_pw <-
          plot.margin = unit( c( .2, .3, .1, .1), 'in'),
          strip.background = element_blank(),
          strip.text = element_text( size = 20))
-
+# gg_pw
 ggsave( 'figures/popwgt_evolution.png',
-        gg_pw, 
+        gg_pw,
         width = 6.2, height = 3, units = 'in', scale = 1.78)
 
+# create data for saving
+popwt_plot[, pwe_total := sum( val), by = year]
+popwt_plot[, pwe_contributed_avoided := val / pwe_total, by = year]
 
-
+fwrite( popwt_plot[, .( year, classnames, pwe_contributed_avoided)],
+        './data/figure_data/figure_4.csv')
 
 
 

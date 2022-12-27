@@ -6,6 +6,8 @@ library( raster)
 library( sf)
 library( fasterize)
 library( data.table)
+library( fst)
+library( ggpattern)
 
 # define the coordinate reference system for this work
 p4s <- "+proj=lcc +lat_1=33 +lat_2=45 +lat_0=40 +lon_0=-97 +a=6370000 +b=6370000"
@@ -56,7 +58,7 @@ popwgt_hy_race_fac <-
 # isolate total population exposure by facility
 popwgt_hy_race_fac.tot <- 
   popwgt_hy_race_fac[( pop_name %in% 'TOT_POP'),
-                                             .( year, FacID, pw.hy)]
+                     .( year, FacID, pw.hy)]
 setnames( popwgt_hy_race_fac.tot, 'pw.hy', 'tot.pop')
 
 # merge the facility total population PWE with race-specific info
@@ -185,41 +187,80 @@ popwgt_state <-
          by = c( 'year', 'pop_name', 'reg', 'state_abbr'))
 
 ## ============================================
+## define geoms that produces both color and texture
+## ============================================
+geom_color_mix <- 
+  function( dt){
+      geom_line( data = dt,
+                 size = 2)  
+  }
+
+geom_ltype_mix <- 
+  function( dt, ltype_name){
+    geom_line( data = dt,
+           aes_string( linetype = ltype_name), 
+           color = 'grey90',
+           size = .75)
+}
+
+## ============================================
 ## nationwide pwe (Fig 3)
 ## ============================================
 # plot it!
 gg_popwgt <- 
-  ggplot( popwgt_hy_race[!( pop_name %in% 'TOT_POP')],
-          aes( x = year, y = pw.hy, group = pop_name, color = pop_name,
+  ggplot( data = popwgt_hy_race[!( pop_name %in% 'TOT_POP')], #NULL, #
+          aes( x = year, y = pw.hy, group = pop_name, #color = pop_name,
                fill = pop_name)) +
   geom_point( data = popwgt_hy_race[ pop_name %in% 'TOT_POP'],
               aes( x = year, y = pw.hy, group = pop_name,
                    shape = pop_name),
               inherit.aes = FALSE,
               color = 'grey50', size = 5) +
-  # geom_ribbon( alpha = .25, color = NA) +
-  geom_line( size = 2) +
+  geom_line( aes( linetype = pop_name)) +
+  # tediously list out each pop name to keep textures on top of colors
+  # geom_color_mix( popwgt_hy_race[( pop_name %in% 'Asian')]) +
+  # geom_ltype_mix( popwgt_hy_race[( pop_name %in% 'Asian')], 'pop_name') +
+  # geom_color_mix( popwgt_hy_race[( pop_name %in% 'Black')]) +
+  # geom_ltype_mix( popwgt_hy_race[( pop_name %in% 'Black')], 'pop_name') +
+  # geom_color_mix( popwgt_hy_race[( pop_name %in% 'Hispanic')]) +
+  # geom_ltype_mix( popwgt_hy_race[( pop_name %in% 'Hispanic')], 'pop_name') +
+  # geom_color_mix( popwgt_hy_race[( pop_name %in% 'Native')]) +
+  # geom_ltype_mix( popwgt_hy_race[( pop_name %in% 'Native')], 'pop_name') +
+  # geom_color_mix( popwgt_hy_race[( pop_name %in% 'Pacific')]) +
+  # geom_ltype_mix( popwgt_hy_race[( pop_name %in% 'Pacific')], 'pop_name') +
+  # geom_color_mix( popwgt_hy_race[( pop_name %in% 'White')]) +
+  # geom_ltype_mix( popwgt_hy_race[( pop_name %in% 'White')], 'pop_name') +
   scale_color_brewer( palette = 'Dark2') +
   scale_fill_brewer( palette = 'Dark2') +
   scale_shape_manual( breaks = 'TOT_POP', values = 19, labels = 'Population average') +
-  labs( y = expression(paste( 'Population-weighted coal ', PM["2.5"], ', µg ', m^{"-3"}))) +
+  labs( y = expression(paste( 'Population-weighted coal ', PM["2.5"], ', µg ', m^{"-3"})),
+        x = 'Year') +
   theme_bw() +
-  theme( axis.title.x = element_blank(),
-         axis.title = element_text( size = 16),
+  theme( axis.title = element_text( size = 16),
          axis.text = element_text( size = 14),
-         legend.position = c( .85, .7),
+         legend.key.width = unit( 2, 'cm'),
+         legend.position = c( .8, .7),
          legend.text = element_text( size = 12),
          legend.title = element_blank(),
          legend.spacing.y = unit( -0.05, "cm"))
-
+gg_popwgt
 
 ggsave( './figures/hyads_popwgt_trends.png', 
         gg_popwgt,
         width = 11, height = 5.5, scale = .8)
 
+# save the data
+fwrite( popwgt_hy_race[, .( year, pop_name, pw.hy)],
+        './data/figure_data/figure_3.csv')
+
 ## =================================================
 ## regional evolution in absolute/relative PWE (fig 5)
 ## =================================================
+# calculate absolute PWE difference
+# rename relative for better communication in saved data
+popwgt_hy_race.reg[, popwgt.absolute.hy := pw.hy - tot.pop.hy]
+popwgt_hy_race.reg[, popwgt.relative.hy := popwgt.frac.hy]
+
 gg_pw_race <- 
   ggplot( popwgt_hy_race.reg,
           aes( x = year,
@@ -227,15 +268,28 @@ gg_pw_race <-
                color = pop_name,
                group = pop_name)) + 
   geom_hline( yintercept = 1) +
-  geom_line( size = 2) +
+  # tediously list out each pop name to keep textures on top of colors
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'Asian')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'Asian')], 'pop_name') +
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'Black')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'Black')], 'pop_name') +
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'Hispanic')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'Hispanic')], 'pop_name') +
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'Native')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'Native')], 'pop_name') +
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'Pacific')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'Pacific')], 'pop_name') +
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'White')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'White')], 'pop_name') +
   scale_y_continuous( name = "Relative PWE difference") +
+  labs( x = 'Year') +
   scale_color_brewer( palette = 'Dark2') +
   facet_grid( . ~ reg) +
   theme_bw() + 
   theme( axis.text = element_text( size = 14),
          axis.text.x = element_text( angle = 30, vjust = .5),
          axis.title = element_text( size = 18),
-         axis.title.x = element_blank(),
+         legend.key.width = unit( 2, 'cm'),
          legend.position = c( .1, .75),
          legend.title = element_blank(),
          legend.text = element_text( size = 14),
@@ -251,7 +305,19 @@ gg_pw_race_abs <-
                color = pop_name,
                group = pop_name)) + 
   geom_hline( yintercept = 0) +
-  geom_line( size = 2) +
+  # tediously list out each pop name to keep textures on top of colors
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'Asian')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'Asian')], 'pop_name') +
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'Black')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'Black')], 'pop_name') +
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'Hispanic')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'Hispanic')], 'pop_name') +
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'Native')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'Native')], 'pop_name') +
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'Pacific')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'Pacific')], 'pop_name') +
+  geom_color_mix( popwgt_hy_race.reg[( pop_name %in% 'White')]) +
+  geom_ltype_mix( popwgt_hy_race.reg[( pop_name %in% 'White')], 'pop_name') +
   labs( y = expression( paste( 'Absolute PWE difference', ', µg', m^{"-3"}))) +
   scale_color_brewer( palette = 'Dark2') +
   facet_grid( . ~ reg) +
@@ -260,6 +326,7 @@ gg_pw_race_abs <-
          axis.text.x = element_text( angle = 30, vjust = .5),
          axis.title = element_text( size = 18),
          axis.title.x = element_blank(),
+         legend.key.width = unit( 2, 'cm'),
          legend.position = c( .1, .2),
          legend.title = element_blank(),
          legend.text = element_text( size = 14),
@@ -271,7 +338,7 @@ gg_combined_reg <-
   cowplot::plot_grid( gg_pw_race_abs + 
                         theme( axis.text.x = element_blank(),
                                axis.ticks.x = element_blank(),
-                               legend.position = c( .9, .3)),
+                               legend.position = c( .87, .3)),
                       gg_pw_race + 
                         theme( legend.position = 'none',
                                strip.text = element_blank()),
@@ -281,8 +348,12 @@ gg_combined_reg <-
 
 
 ggsave( './figures/popwgt_region_combined.png',
-        gg_combined_reg, width = 6.2, height = 5, units = 'in', scale = 1.6)
+        gg_combined_reg, width = 6.2, height = 5, 
+        units = 'in', scale = 1.6)
 
+# save the data
+fwrite( popwgt_hy_race.reg[, .( year, pop_name, reg, popwgt.absolute.hy, popwgt.relative.hy)],
+        './data/figure_data/figure_5.csv')
 
 ## ============================================
 # expected relative disparities (fig si-4)
@@ -295,15 +366,28 @@ gg_expected_disparities <-
                color = pop_name,
                group = pop_name)) + 
   geom_hline( yintercept = 1) +
-  geom_line( size = 2) +
+  # tediously list out each pop name to keep textures on top of colors
+  geom_color_mix( popwgt_idwe_race.reg[( pop_name %in% 'Asian')]) +
+  geom_ltype_mix( popwgt_idwe_race.reg[( pop_name %in% 'Asian')], 'pop_name') +
+  geom_color_mix( popwgt_idwe_race.reg[( pop_name %in% 'Black')]) +
+  geom_ltype_mix( popwgt_idwe_race.reg[( pop_name %in% 'Black')], 'pop_name') +
+  geom_color_mix( popwgt_idwe_race.reg[( pop_name %in% 'Hispanic')]) +
+  geom_ltype_mix( popwgt_idwe_race.reg[( pop_name %in% 'Hispanic')], 'pop_name') +
+  geom_color_mix( popwgt_idwe_race.reg[( pop_name %in% 'Native')]) +
+  geom_ltype_mix( popwgt_idwe_race.reg[( pop_name %in% 'Native')], 'pop_name') +
+  geom_color_mix( popwgt_idwe_race.reg[( pop_name %in% 'Pacific')]) +
+  geom_ltype_mix( popwgt_idwe_race.reg[( pop_name %in% 'Pacific')], 'pop_name') +
+  geom_color_mix( popwgt_idwe_race.reg[( pop_name %in% 'White')]) +
+  geom_ltype_mix( popwgt_idwe_race.reg[( pop_name %in% 'White')], 'pop_name') +
   scale_y_continuous( name = "Expected relative PWE") +
   scale_color_brewer( palette = 'Dark2') +
+  labs( x = 'Year') +
   facet_grid( . ~ reg) +
   theme_bw() + 
   theme( axis.text = element_text( size = 14),
          axis.text.x = element_text( angle = 30, vjust = .5),
          axis.title = element_text( size = 18),
-         axis.title.x = element_blank(),
+         legend.key.width = unit( 2, 'cm'),
          legend.position = c( .1, .75),
          legend.title = element_blank(),
          legend.text = element_text( size = 14),
@@ -312,22 +396,38 @@ gg_expected_disparities <-
          strip.text = element_text( size = 20))
 ggsave( './figures/pwe_expected_disparities.png',
         gg_expected_disparities,
-        width = 8, height = 5, units = 'in', scale = 1)
+        width = 10, height = 5, units = 'in', scale = 1)
 
 ## ============================================
 # population-weighted exposure enhancement (fig 6)
 ## ============================================
+# define relative PWE enhancement
+popwgt_reg[, relative_PWE_enhancement := popwgt.frac.hy / popwgt.frac]
+
 ## regional differences than expected
 # regional expected disparities
 gg_norm_region <- 
   ggplot( popwgt_reg,
           aes( x = year,
-               y = popwgt.frac.hy / popwgt.frac,
+               y = relative_PWE_enhancement,
                color = pop_name,
                group = pop_name)) + 
   geom_hline( yintercept = 1) +
-  geom_line( size = 2) +
+  # tediously list out each pop name to keep textures on top of colors
+  geom_color_mix( popwgt_reg[( pop_name %in% 'Asian')]) +
+  geom_ltype_mix( popwgt_reg[( pop_name %in% 'Asian')], 'pop_name') +
+  geom_color_mix( popwgt_reg[( pop_name %in% 'Black')]) +
+  geom_ltype_mix( popwgt_reg[( pop_name %in% 'Black')], 'pop_name') +
+  geom_color_mix( popwgt_reg[( pop_name %in% 'Hispanic')]) +
+  geom_ltype_mix( popwgt_reg[( pop_name %in% 'Hispanic')], 'pop_name') +
+  geom_color_mix( popwgt_reg[( pop_name %in% 'Native')]) +
+  geom_ltype_mix( popwgt_reg[( pop_name %in% 'Native')], 'pop_name') +
+  geom_color_mix( popwgt_reg[( pop_name %in% 'Pacific')]) +
+  geom_ltype_mix( popwgt_reg[( pop_name %in% 'Pacific')], 'pop_name') +
+  geom_color_mix( popwgt_reg[( pop_name %in% 'White')]) +
+  geom_ltype_mix( popwgt_reg[( pop_name %in% 'White')], 'pop_name') +
   scale_y_continuous( name = "Relative PWE enhancement") +
+  labs( x = 'Year') +
   scale_color_brewer( palette = 'Dark2') +
   facet_grid( . ~ reg) +
   guides( color = guide_legend( ncol = 2)) +
@@ -335,8 +435,9 @@ gg_norm_region <-
   theme( axis.text = element_text( size = 14),
          axis.text.x = element_text( ),
          axis.title = element_text( size = 18),
-         axis.title.x = element_blank(),
-         legend.position = c( .12, .11),
+         # axis.title.x = element_blank(),
+         legend.key.width = unit( 1.25, 'cm'),
+         legend.position = c( .12, .87),
          legend.title = element_blank(),
          legend.text = element_text( size = 14),
          strip.background = element_blank(),
@@ -346,14 +447,35 @@ gg_norm_region <-
 ## spatial plot by state 
 # merge state info by population-weighted exposure by state
 popwgt_state.sf <- 
-  merge( states, popwgt_state, by = 'state_abbr')
+  merge( states, popwgt_state, by = 'state_abbr',
+         all.x = TRUE)
+
+# create marker for above/below 1
+popwgt_state.sf$above1 = ifelse( popwgt_state.sf$popwgt.frac.hy / popwgt_state.sf$popwgt.frac >= 1, 'YES', 'NO')
+# popwgt_state.sf$above1 = ifelse( popwgt_state.sf$popwgt.frac.hy / popwgt_state.sf$popwgt.frac <  1, 'NO')
+
+# define relative column for saving data
+popwgt_state.sf$relative_PWE_enhancement <- popwgt_state.sf$popwgt.frac.hy / popwgt_state.sf$popwgt.frac
+
 
 gg_norm_maps <- 
   ggplot( popwgt_state.sf[ popwgt_state.sf$year %in% c( 1999, 2020),],
-          aes( fill = popwgt.frac.hy / popwgt.frac)) + 
-  geom_sf() + 
+          aes( fill = popwgt.frac.hy / popwgt.frac,
+               pattern = above1)) + 
+  geom_sf_pattern( #pattern_spacing = .08,
+                   pattern_key_scale_factor = .5,
+                   pattern_scale = .1,
+                   pattern_size = .1,
+                   pattern_color = 'grey40',
+                   pattern_fill = 'grey40',
+                   pattern_res = 300,
+                   pattern_density = .1,
+                   color = 'grey30',
+                   lwd = 0.01) + 
+  scale_pattern_discrete( name = "Rel.\nPWE\nenhmnt\n≥ 1?") +
   scale_fill_gradient2( name = 'Rel.\nPWE\nenhmnt',
                         breaks = c( 0.5, 1, 1.5),
+                        na.value = 'orange',
                         midpoint = 1,
                         high = muted( "red"),
                         low = muted( "blue"),
@@ -362,7 +484,9 @@ gg_norm_maps <-
   theme_bw() +
   theme( axis.text = element_blank(),
          axis.ticks = element_blank(),
+         legend.background = element_blank(),
          legend.position = 'left',
+         legend.justification = 'bottom',
          legend.title = element_text( size = 12),
          legend.text = element_text( size = 12),
          panel.border = element_blank(),
@@ -374,12 +498,23 @@ gg_combined_norm <-
   cowplot::plot_grid( gg_norm_region,
                       gg_norm_maps,
                       ncol = 1,
-                      rel_heights = c( .73, .4),
-                      axis = 'l',
-                      align = 'v')
+                      rel_heights = c( .73, .43),
+                      axis = 'r',
+                      align = 'none')
 ggsave( './figures/pwe_norm_timeseries_maps.png',
         gg_combined_norm,
         width = 8, height = 5, units = 'in', scale = 1.6)
+
+# save the data
+fwrite( popwgt_reg[, .( year, pop_name, reg, relative_PWE_enhancement)],
+        './data/figure_data/figure_6_region.csv')
+
+# state data stave
+popwgt_state.sf.dt <- 
+  as.data.table( popwgt_state.sf)[, .( year, pop_name, state_name, reg, relative_PWE_enhancement)] %>%
+  na.omit()
+fwrite( popwgt_state.sf.dt,
+        './data/figure_data/figure_6_state.csv')
 
 
 ## ================================================== 

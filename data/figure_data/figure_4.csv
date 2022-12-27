@@ -1,0 +1,154 @@
+year,classnames,pwe_contributed_avoided
+2000,Contributed: uncontrolled,0.854965967241591
+2001,Contributed: uncontrolled,0.807771465793813
+2002,Contributed: uncontrolled,0.806460428127343
+2003,Contributed: uncontrolled,0.80287526997369
+2004,Contributed: uncontrolled,0.777099448087285
+2005,Contributed: uncontrolled,0.790242719520658
+2006,Contributed: uncontrolled,0.755656836596525
+2007,Contributed: uncontrolled,0.722009205902222
+2008,Contributed: uncontrolled,0.569061535971003
+1999,Contributed: uncontrolled,0.85056752427676
+2016,Contributed: uncontrolled,0.00589505406895332
+2017,Contributed: uncontrolled,0.0158461065730077
+2018,Contributed: uncontrolled,0.0114174333079317
+2019,Contributed: uncontrolled,0.00442734346163443
+2015,Contributed: uncontrolled,0.0198870051217763
+2010,Contributed: uncontrolled,0.213539355300689
+2013,Contributed: uncontrolled,0.0924397182177913
+2009,Contributed: uncontrolled,0.242439237007009
+2011,Contributed: uncontrolled,0.14521529594561
+2014,Contributed: uncontrolled,0.0545998161267996
+2012,Contributed: uncontrolled,0.0470582201085096
+2020,Contributed: uncontrolled,0.00532140007422373
+1999,Avoided: reduced operation before scrubber,0.0595540019274459
+2009,Avoided: reduced operation before scrubber,0.195773323809446
+2010,Avoided: reduced operation before scrubber,0.159889832195978
+2011,Avoided: reduced operation before scrubber,0.182409318712106
+2012,Avoided: reduced operation before scrubber,0.218775776989572
+2013,Avoided: reduced operation before scrubber,0.166275941970391
+2014,Avoided: reduced operation before scrubber,0.16090322021256
+2015,Avoided: reduced operation before scrubber,0.132330621216974
+2016,Avoided: reduced operation before scrubber,0.0956598526130339
+2004,Avoided: reduced operation before scrubber,0.0914906985628693
+2002,Avoided: reduced operation before scrubber,0.0777251913120253
+2005,Avoided: reduced operation before scrubber,0.0642575459864456
+2000,Avoided: reduced operation before scrubber,0.0508396897924296
+2006,Avoided: reduced operation before scrubber,0.077228225504393
+2007,Avoided: reduced operation before scrubber,0.0477040194361157
+2008,Avoided: reduced operation before scrubber,0.079087199264632
+2020,Avoided: reduced operation before scrubber,0.0467036769858732
+2001,Avoided: reduced operation before scrubber,0.0808597120802675
+2003,Avoided: reduced operation before scrubber,0.0750989803489115
+2017,Avoided: reduced operation before scrubber,0.0750042548893128
+2018,Avoided: reduced operation before scrubber,0.0548911410345245
+2019,Avoided: reduced operation before scrubber,0.0490403845586195
+2017,Avoided: retirement,0.195951351309607
+2018,Avoided: retirement,0.218587129766776
+2019,Avoided: retirement,0.23469895597122
+2020,Avoided: retirement,0.244414062355471
+2003,Avoided: retirement,0.0108519593064025
+2004,Avoided: retirement,0.0132325418865553
+2005,Avoided: retirement,0.0130962817817234
+2006,Avoided: retirement,0.0156696965192949
+2007,Avoided: retirement,0.0173999571279235
+2008,Avoided: retirement,0.0204947832518842
+2009,Avoided: retirement,0.0288560646027892
+2010,Avoided: retirement,0.031996673913551
+2011,Avoided: retirement,0.0405026991275206
+2012,Avoided: retirement,0.0595287165801079
+2013,Avoided: retirement,0.0803003643530484
+2014,Avoided: retirement,0.100759620225212
+2015,Avoided: retirement,0.142251243923884
+2016,Avoided: retirement,0.178637762727847
+2002,Avoided: retirement,0.00450741177698191
+2001,Avoided: retirement,0.00206773231494446
+1999,Avoided: retirement,0.000637978637030867
+2000,Avoided: retirement,0.0019296653851212
+2019,Avoided: retirement after scrubber,0.0226724004971514
+2020,Avoided: retirement after scrubber,0.0281996989193627
+2017,Avoided: retirement after scrubber,0.00992700731340421
+2018,Avoided: retirement after scrubber,0.0188382756298677
+2014,Avoided: retirement after scrubber,0.00296203507984165
+2015,Avoided: retirement after scrubber,0.00480875744596748
+2016,Avoided: retirement after scrubber,0.00596708106999458
+2005,Avoided: retirement after scrubber,2.66849947662862e-05
+2006,Avoided: retirement after scrubber,2.69403452856763e-05
+2007,Avoided: retirement after scrubber,2.56735411532525e-05
+2008,Avoided: retirement after scrubber,5.36352485370209e-05
+2009,Avoided: retirement after scrubber,6.06743527991619e-05
+2010,Avoided: retirement after scrubber,5.70531995589691e-05
+2011,Avoided: retirement after scrubber,0.000144643506550082
+2012,Avoided: retirement after scrubber,0.00172568944197943
+2013,Avoided: retirement after scrubber,0.00218631949239057
+2000,Avoided: retirement after scrubber,1.62362228122287e-05
+2001,Avoided: retirement after scrubber,1.73866451620817e-05
+2002,Avoided: retirement after scrubber,1.69419405617496e-05
+2003,Avoided: retirement after scrubber,1.61699558602538e-05
+2004,Avoided: retirement after scrubber,1.62111406031577e-05
+2008,Avoided: scrubber,0.226692304525167
+2009,Avoided: scrubber,0.419755673880789
+2010,Avoided: scrubber,0.479272985255393
+2011,Avoided: scrubber,0.519813927099804
+2012,Avoided: scrubber,0.569485948397033
+2013,Avoided: scrubber,0.557820994861709
+2014,Avoided: scrubber,0.574988732060089
+2015,Avoided: scrubber,0.618647880197147
+2016,Avoided: scrubber,0.635507540500447
+2017,Avoided: scrubber,0.622275223639006
+2018,Avoided: scrubber,0.620507277480753
+2019,Avoided: scrubber,0.620675464383463
+2020,Avoided: scrubber,0.614039890849872
+1999,Avoided: scrubber,0
+2000,Avoided: scrubber,0.000729999779572948
+2001,Avoided: scrubber,0.0160554825863069
+2002,Avoided: scrubber,0.0253831511743867
+2003,Avoided: scrubber,0.0242265301656563
+2004,Avoided: scrubber,0.0242882349362165
+2005,Avoided: scrubber,0.0330865234872486
+2006,Avoided: scrubber,0.0571455240038504
+2007,Avoided: scrubber,0.11909097407293
+2008,Contributed: scrubber,0.0870209621290697
+2010,Contributed: scrubber,0.0875530821494372
+2015,Contributed: scrubber,0.0178664095892173
+2017,Contributed: scrubber,0.022085068818825
+2013,Contributed: scrubber,0.0558601852475515
+2016,Contributed: scrubber,0.0141250949799746
+2018,Contributed: scrubber,0.0233011983693115
+2003,Contributed: scrubber,0.0727705501483461
+2004,Contributed: scrubber,0.0805371514749727
+2005,Contributed: scrubber,0.0910877102561693
+2006,Contributed: scrubber,0.0817467713643798
+2007,Contributed: scrubber,0.082625949559636
+2009,Contributed: scrubber,0.0813935137643424
+2011,Contributed: scrubber,0.07578485997698
+2012,Contributed: scrubber,0.0466598197440808
+2014,Contributed: scrubber,0.0544551661110031
+2019,Contributed: scrubber,0.0111854124037358
+2020,Contributed: scrubber,0.00466999732679471
+1999,Contributed: scrubber,0.0780581923221666
+2000,Contributed: scrubber,0.0848824414782917
+2001,Contributed: scrubber,0.0764523997480846
+2002,Contributed: scrubber,0.0706539407223237
+2009,Avoided: reduced operation after scrubber,0.0317215125828253
+2011,Avoided: reduced operation after scrubber,0.0361292556314296
+2012,Avoided: reduced operation after scrubber,0.0567658287387172
+2013,Avoided: reduced operation after scrubber,0.0451164758571182
+2014,Avoided: reduced operation after scrubber,0.0513314101844949
+2016,Avoided: reduced operation after scrubber,0.0642076140397493
+2018,Avoided: reduced operation after scrubber,0.0524575444108362
+2019,Avoided: reduced operation after scrubber,0.0573000387241761
+2020,Avoided: reduced operation after scrubber,0.0566512734884021
+2015,Avoided: reduced operation after scrubber,0.064208082505034
+2017,Avoided: reduced operation after scrubber,0.0589109874568374
+1999,Avoided: reduced operation after scrubber,0.011182302836597
+2000,Avoided: reduced operation after scrubber,0.00663600010018151
+2001,Avoided: reduced operation after scrubber,0.0167758208314216
+2002,Avoided: reduced operation after scrubber,0.0152529349463781
+2010,Avoided: reduced operation after scrubber,0.0276910179853926
+2008,Avoided: reduced operation after scrubber,0.0175895796097076
+2006,Avoided: reduced operation after scrubber,0.0125260056662718
+2003,Avoided: reduced operation after scrubber,0.0141605401011338
+2004,Avoided: reduced operation after scrubber,0.0133357139114984
+2005,Avoided: reduced operation after scrubber,0.00820253397298879
+2007,Avoided: reduced operation after scrubber,0.0111442203600204
